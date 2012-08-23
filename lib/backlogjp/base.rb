@@ -30,6 +30,14 @@ module Backlogjp
       attr_reader(*attributes)
     end
 
+    def self.get_id(container)
+      container.respond_to?(:id) ? container.id : container
+    end
+
+    def self.date_to_string(date)
+      date.respond_to?(:strftime) ? date.strftime('%Y%m%d') : date
+    end
+
     def initialize(hash)
       attributes = self.class.instance_variable_get(:@attributes)
 

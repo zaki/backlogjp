@@ -86,6 +86,17 @@ module Backlogjp
       components.map {|hash| Component.new(hash)}
     end
 
+    # Creates a new component for the project
+    # @param [String] Component name
+    # @return [Component] The created component or nil if it could not be created
+    # @example
+    #   # assuming `project` is a valid backlog.jp Project
+    #   project.create_component("TEST-COMPONENT")
+    #   # >> Component
+    def create_component(name)
+      Backlogjp::Component.create(self, name)
+    end
+
     # Returns an array of versions set in the project
     # @return [Array<Version>] The versions set in the project
     # @example
@@ -97,6 +108,19 @@ module Backlogjp
     def versions
       versions = Backlogjp.base._command "getVersions", self.id
       versions.map {|hash| Version.new(hash)}
+    end
+
+    # Creates a new version for the project
+    # @param [String] Version name
+    # @param [Time|String] optional Start date
+    # @param [Time|String] optional Due date
+    # @return [Version] The created version or nil if it could not be created
+    # @example
+    #   # assuming `project` is a valid backlog.jp Project
+    #   project.create_version("VERSION-1", Time.parse('2012-01-01'), '20121231')
+    #   # >> Version
+    def create_version(name, start_date=nil, due_date=nil)
+      Backlogjp::Version.create(self, name, start_date, due_date)
     end
 
     # Returns an array of users assigned to the project
@@ -123,6 +147,18 @@ module Backlogjp
     def issue_types
       issue_types = Backlogjp.base._command "getIssueTypes", self.id
       issue_types.map {|hash| IssueType.new(hash)}
+    end
+
+    # Creates a new issue type for the project
+    # @param [String] Issue type name
+    # @param [String] Issue type color
+    # @return [IssueType] The created issue type or nil if it could not be created
+    # @example
+    #   # assuming `project` is a valid backlog.jp Project
+    #   project.create_issue_type("Critical Bug", "#e30000")
+    #   # >> IssueType
+    def create_issue_type(name, color)
+      Backlogjp::IssueType.create(self, name, color)
     end
   end
 end

@@ -15,7 +15,26 @@ describe Backlogjp::Version do
     end
 
     it "has proper datetime as due date" do
-      @versions[0].date.class.should == DateTime
+      @versions[0].due_date.class.should == DateTime
+    end
+  end
+
+  context "CRUD" do
+    # TODO: Separate out concerns
+    it "creates, updates and deletes version" do
+      # CREATE
+      version = nil
+      expect{ version = @project.create_version "TEST-VERSION-1"}
+          .to change{ @project.versions.length }.by(1)
+      version.name.should == 'TEST-VERSION-1'
+
+      # UPDATE
+      version.update 'TEST-VERSION-2'
+      version.name.should == 'TEST-VERSION-2'
+
+      # DELETE
+      expect{ version.delete }
+          .to change{ @project.versions.length }.by(-1)
     end
   end
 end
