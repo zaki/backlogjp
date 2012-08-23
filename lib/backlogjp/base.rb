@@ -34,7 +34,7 @@ module Backlogjp
       attributes = self.class.instance_variable_get(:@attributes)
 
       attributes.each do |var|
-        instance_variable_set(:"@#{var}", hash[var.to_s])
+        instance_variable_set(:"@#{var}", hash[var.to_s] || hash[var.to_sym])
       end
     end
 
